@@ -3,7 +3,6 @@ import pandas as pd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-import plotly.express as px
 
 @st.cache_data
 def get_data():
