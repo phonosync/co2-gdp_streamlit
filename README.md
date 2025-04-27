@@ -14,7 +14,7 @@ Run the app locally:
 streamlit run co2-gdp_db_plotly_streamlit.py
 ```
 
-The app is deployed on Streamlit Cloud at `https://co2-gdp-db.streamlit.app
+The app is deployed on Streamlit Cloud at https://co2-gdp-db.streamlit.app
 
 Deploy your own app on Streamlit Cloud:
 1. Push the code to a public GitHub repository of yours.
