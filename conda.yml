@@ -1,0 +1,12 @@
+name: co2gdpstreamlit
+channels:
+  - conda-forge
+  - bokeh
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      - pandas==2.2.0
+      - geopandas==1.0.1
+      - plotly==5.18.0
+      - streamlit==1.31.1
