@@ -63,7 +63,7 @@ st.markdown("<h1 class='main-header'>Sample Dashboard on the CO2 Emissions Datas
 @st.cache_data
 def load_data():
     try:
-        return pd.read_csv(fp_co2 gdp_data) #, sep=';'
+        return pd.read_csv(fp_co2gdp_data) #, sep=';'
     except Exception as e:
         st.error(f"Error retrieving dataset: {e}")
         # Create a sample dataframe for demonstration if file is not found
