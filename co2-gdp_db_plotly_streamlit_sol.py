@@ -1,15 +1,13 @@
-import streamlit as st
-import pandas as pd
-import numpy as np
-import plotly.express as px
-import plotly.graph_objects as go
 import os
 import requests
 import tempfile
 import zipfile
-# from dotenv import load_dotenv, find_dotenv
+import streamlit as st
+import numpy as np
+import pandas as pd
 import geopandas as gpd
-from matplotlib.colors import LogNorm
+import plotly.express as px
+import plotly.graph_objects as go
 
 # Page config
 st.set_page_config(
@@ -18,11 +16,6 @@ st.set_page_config(
     layout="wide"
 )
 
-# Load environment variables
-# load_dotenv(find_dotenv(usecwd=True))
-# data_folder = os.getenv('DATA_FOLDER', 'data')  # Default to 'data' if not defined
-# fp_co2gdp_data = 'co2-gdp_data/co2_gdp_country.csv'
-# fp_geo_data = 'geo_data/ne_110m_admin_0_countries.shp'
 url_co2gdp_data = 'https://drive.switch.ch/index.php/s/cxW0xrmQXdGL1VJ/download'
 url_geo_data = 'https://drive.switch.ch/index.php/s/bfb1TrwoIrXGAfM/download'
 
@@ -85,18 +78,13 @@ df = load_data()
 @st.cache_data
 def load_geo_data():
     try:
-        # URL to the zipped shapefile
-        url = "https://drive.switch.ch/index.php/s/bfb1TrwoIrXGAfM/download"
-        
         # Create a temporary directory to store the downloaded and extracted files
         with tempfile.TemporaryDirectory() as temp_dir:
             # Download the zip file
-            # st.write("Downloading geographic data...")
-            response = requests.get(url)
+            response = requests.get(url_geo_data)
             
             if response.status_code != 200:
-                st.error(f"Failed to download: Status code {response.status_code}")
-                return None
+                raise Exception(f"Failed to download: Status code {response.status_code}")
             
             # Save the zip file to the temporary directory
             zip_path = os.path.join(temp_dir, "geo_data.zip")
@@ -104,7 +92,6 @@ def load_geo_data():
                 f.write(response.content)
             
             # Extract the zip file
-            # st.write("Extracting files...")
             with zipfile.ZipFile(zip_path, 'r') as zip_ref:
                 zip_ref.extractall(temp_dir)
             
@@ -119,11 +106,9 @@ def load_geo_data():
                     break
             
             if not shapefile_path:
-                st.error("No .shp file found in the downloaded zip.")
-                return None
+                raise Exception("No .shp file found in the downloaded zip.")
             
             # Load the shapefile with GeoPandas
-            # st.write(f"Loading shapefile: {os.path.basename(shapefile_path)}")
             world = gpd.read_file(shapefile_path)
             
             # Rename the country column if needed
@@ -132,12 +117,11 @@ def load_geo_data():
             elif 'name' in world.columns:
                 world = world.rename(columns={'name': 'country'})
             
-            # st.success("Geographic data loaded successfully!")
             return world
             
     except Exception as e:
-        st.warning("Geographic data not found. Choropleth maps will not be available.")
         st.error(f"Error retrieving geographic data: {e}")
+        st.warning("Geographic data not found. Choropleth maps will not be available.")
         return None
 
 
